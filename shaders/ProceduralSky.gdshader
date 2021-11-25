@@ -17,11 +17,11 @@ shader_type sky;
 // Globals.
 uniform float _Exposure = 1.3;
 uniform float _Tonemap: hint_range(0.0, 1.0) = 0.0;
-uniform float _ContrastLevel: hint_range(0.0, 1.0) = 0.3;
+uniform float _ContrastLevel: hint_range(0.0, 1.0) = 0.4;
 uniform vec4 _GroundColor: hint_color = vec4(0.3, 0.3, 0.3, 1.0);
 
 // Rayleigh.
-uniform float _AtmosDarkness: hint_range(0.0, 1.0) = 0.5;
+uniform float _AtmosDarkness: hint_range(0.0, 1.0) = 0.936;
 uniform float _AtmosSunIntensity = 30.0;
 uniform float _AtmosThickness = 1.0;
 uniform vec4 _AtmosDayTint: hint_color = vec4(1.0);
@@ -30,15 +30,15 @@ uniform vec4 _AtmosNightTint: hint_color = vec4(0.02, 0.03, 0.04, 1.0);
 uniform vec3 _AtmosLevelParams = vec3(1.0, 0.0, 0.0);
 
 // MiePhase.
-uniform float _AtmosMie = 0.07;
+uniform float _AtmosMie = 0.01;
 uniform vec4 _AtmosMieTint: hint_color = vec4(1.0);
 uniform float _AtmosMieIntensity = 1.0;
 uniform float _AtmosMieAnisotropy: hint_range(0.0, 0.9999999) = 0.8;
 
 // Sun Disk.
 uniform vec4  _SunDiskTint: hint_color = vec4(0.99, 0.49, 0.22, 1.0);
-uniform float _SunDiskIntensity = 10.0;
-uniform float _SunDiskSize = 0.022;
+uniform float _SunDiskIntensity = 1.3;
+uniform float _SunDiskSize = 0.009;
 
 // PI.
 const float kPI     = 3.1415927;  // π.
@@ -73,7 +73,7 @@ vec3 contrastLevel(vec3 vec, float level){
 
 vec3 tonemapPhoto(vec3 color, float exposure, float level){
 	color.rgb *= exposure;
-	return mix(color.rgb, 1.0 - exp(-color.rgb), level);
+	return mix(color.rgb, 1.0 - exp2(-color.rgb), level);
 }
 
 float sunDisk(vec3 norm, vec3 coords, lowp float size){
